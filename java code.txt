@@ -1,0 +1,458 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Main {
+
+    static final int CAPACITY = 50;
+
+    static class CityData {
+        String cityName;
+        String[] names;
+        int[][] distance;
+        int[] students;
+
+        CityData(String cityName, String[] names,
+                 int[][] distance, int[] students) {
+
+            this.cityName = cityName;
+            this.names = names;
+            this.distance = distance;
+            this.students = students;
+        }
+    }
+
+    static int bestDistance;
+    static int[] bestPath;
+    static int bruteForceDistance;
+
+    // Calculate route distance
+    static int calculateDistance(int[] path, int[][] distance) {
+
+        int total = 0;
+
+        for (int i = 0; i < path.length - 1; i++) {
+            total += distance[path[i]][path[i + 1]];
+        }
+
+        return total;
+    }
+
+    // Nearest Neighbor Algorithm
+    static int[] nearestNeighbor(int[][] distance) {
+
+        int n = distance.length;
+        int start = 0;
+        int end = n - 1;
+
+        boolean[] visited = new boolean[n];
+        int[] path = new int[n];
+
+        int current = start;
+
+        path[0] = start;
+        visited[start] = true;
+
+        for (int i = 1; i < n - 1; i++) {
+
+            int nearest = -1;
+            int minimum = Integer.MAX_VALUE;
+
+            for (int j = 0; j < n; j++) {
+
+                if (!visited[j] && j != end &&
+                    distance[current][j] < minimum) {
+
+                    minimum = distance[current][j];
+                    nearest = j;
+                }
+            }
+
+            path[i] = nearest;
+            visited[nearest] = true;
+            current = nearest;
+        }
+
+        path[n - 1] = end;
+
+        return path;
+    }
+
+    // Branch and Bound Algorithm
+    static void branchAndBound(int[][] distance,
+                               int[] path,
+                               boolean[] visited,
+                               int level,
+                               int currentCost) {
+
+        int n = distance.length;
+        int end = n - 1;
+
+        if (currentCost >= bestDistance) {
+            return;
+        }
+
+        if (level == n - 1) {
+
+            int total = currentCost +
+                distance[path[level - 1]][end];
+
+            if (total < bestDistance) {
+
+                bestDistance = total;
+
+                bestPath = Arrays.copyOf(path, n);
+                bestPath[n - 1] = end;
+            }
+
+            return;
+        }
+
+        int current = path[level - 1];
+
+        for (int i = 1; i < end; i++) {
+
+            if (!visited[i]) {
+
+                visited[i] = true;
+                path[level] = i;
+
+                branchAndBound(
+                    distance,
+                    path,
+                    visited,
+                    level + 1,
+                    currentCost + distance[current][i]
+                );
+
+                visited[i] = false;
+            }
+        }
+    }
+
+    static int[] findBranchAndBound(int[][] distance) {
+
+        int n = distance.length;
+
+        bestDistance = Integer.MAX_VALUE;
+        bestPath = new int[n];
+
+        int[] path = new int[n];
+        boolean[] visited = new boolean[n];
+
+        path[0] = 0;
+        visited[0] = true;
+
+        branchAndBound(
+            distance, path, visited, 1, 0
+        );
+
+        return bestPath;
+    }
+
+    // Brute Force Algorithm
+    static void bruteForce(int[][] distance,
+                           int[] path,
+                           boolean[] visited,
+                           int level,
+                           int currentCost) {
+
+        int n = distance.length;
+        int end = n - 1;
+
+        if (level == n - 1) {
+
+            int total = currentCost +
+                distance[path[level - 1]][end];
+
+            if (total < bruteForceDistance) {
+                bruteForceDistance = total;
+            }
+
+            return;
+        }
+
+        int current = path[level - 1];
+
+        for (int i = 1; i < end; i++) {
+
+            if (!visited[i]) {
+
+                visited[i] = true;
+                path[level] = i;
+
+                bruteForce(
+                    distance,
+                    path,
+                    visited,
+                    level + 1,
+                    currentCost + distance[current][i]
+                );
+
+                visited[i] = false;
+            }
+        }
+    }
+
+    static int findBruteForce(int[][] distance) {
+
+        int n = distance.length;
+
+        bruteForceDistance = Integer.MAX_VALUE;
+
+        int[] path = new int[n];
+        boolean[] visited = new boolean[n];
+
+        path[0] = 0;
+        visited[0] = true;
+
+        bruteForce(
+            distance, path, visited, 1, 0
+        );
+
+        return bruteForceDistance;
+    }
+
+    // Display route
+    static void displayRoute(int[] path, String[] names) {
+
+        for (int i = 0; i < path.length; i++) {
+
+            System.out.print(names[path[i]]);
+
+            if (i < path.length - 1) {
+                System.out.print(" -> ");
+            }
+        }
+
+        System.out.println();
+    }
+
+    // Process selected city
+    static void processCity(CityData city) {
+
+        int totalStudents = 0;
+
+        for (int count : city.students) {
+            totalStudents += count;
+        }
+
+        System.out.println("\n========================================");
+        System.out.println("CITY: " + city.cityName);
+        System.out.println("========================================");
+
+        System.out.println("Direction: Home to School");
+        System.out.println("Bus Capacity: " + CAPACITY);
+        System.out.println("Total Students: " + totalStudents);
+
+        if (totalStudents > CAPACITY) {
+            System.out.println("Bus capacity exceeded!");
+            return;
+        }
+
+        System.out.println("Capacity Check: Successful");
+
+        // Nearest Neighbor
+        int[] nnPath = nearestNeighbor(city.distance);
+
+        int nnDistance = calculateDistance(
+            nnPath, city.distance
+        );
+
+        System.out.println("\n--- NEAREST NEIGHBOR (GREEDY) ---");
+
+        System.out.print("Route: ");
+        displayRoute(nnPath, city.names);
+
+        System.out.println("Total Distance: " + nnDistance + " km");
+
+        // Branch and Bound
+        int[] bbPath = findBranchAndBound(city.distance);
+
+        int bbDistance = calculateDistance(
+            bbPath, city.distance
+        );
+
+        System.out.println("\n--- BRANCH AND BOUND ---");
+
+        System.out.print("Route: ");
+        displayRoute(bbPath, city.names);
+
+        System.out.println("Minimum Distance: " + bbDistance + " km");
+
+        // Brute Force Verification
+        int bfDistance = findBruteForce(city.distance);
+
+        System.out.println("\n--- BRUTE FORCE VERIFICATION ---");
+        System.out.println("Minimum Distance: " + bfDistance + " km");
+
+        // Distance Comparison
+        System.out.println("\n--- DISTANCE COMPARISON ---");
+
+        System.out.println("Nearest Neighbor: " + nnDistance + " km");
+        System.out.println("Branch and Bound: " + bbDistance + " km");
+
+        if (nnDistance > bbDistance) {
+
+            System.out.println("Distance Saved: " +
+                (nnDistance - bbDistance) + " km");
+
+        } else if (nnDistance == bbDistance) {
+
+            System.out.println("Both algorithms have the same distance.");
+
+        } else {
+
+            System.out.println("Nearest Neighbor is shorter by: " +
+                (bbDistance - nnDistance) + " km");
+        }
+
+        // Verification
+        System.out.println("\n========================================");
+        System.out.println("VERIFICATION");
+        System.out.println("========================================");
+
+        if (bbDistance == bfDistance) {
+
+            System.out.println(
+                "Branch and Bound result verified successfully!"
+            );
+
+        } else {
+
+            System.out.println("Verification failed!");
+        }
+
+        System.out.println("\nOne bus completes one trip.");
+        System.out.println("No second bus or second trip is used.");
+
+        System.out.println("========================================");
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Rajahmundry
+        CityData rajahmundry = new CityData(
+            "Rajahmundry",
+
+            new String[] {
+                "Rajahmundry",
+                "Lalacheruvu",
+                "Danavaipeta",
+                "Gandhipuram 1st Street",
+                "Pragati English Medium School, Kakinada"
+            },
+
+            new int[][] {
+                {0, 5, 4, 2, 60},
+                {5, 0, 8, 9, 60},
+                {4, 8, 0, 2, 58},
+                {2, 9, 2, 0, 55},
+                {60, 60, 58, 55, 0}
+            },
+
+            new int[] {12, 10, 13}
+        );
+
+        // Peddapuram
+        CityData peddapuram = new CityData(
+            "Peddapuram",
+
+            new String[] {
+                "Peddapuram",
+                "Government Hospital",
+                "Peddapuram Bus Stand",
+                "Peddapuram Road Area",
+                "Pragati English Medium School, Kakinada"
+            },
+
+            new int[][] {
+                {0, 5, 4, 2, 30},
+                {5, 0, 8, 9, 32},
+                {4, 8, 0, 2, 29},
+                {2, 9, 2, 0, 25},
+                {30, 32, 29, 25, 0}
+            },
+
+            new int[] {10, 12, 13}
+        );
+
+        // Samalkot
+        CityData samalkot = new CityData(
+            "Samalkot",
+
+            new String[] {
+                "Samalkot",
+                "Mehar Complex",
+                "Gandhi Statue Center",
+                "Samalkot APSRTC Bus Stand",
+                "Pragati English Medium School, Kakinada"
+            },
+
+            new int[][] {
+                {0, 5, 2, 4, 15},
+                {5, 0, 9, 8, 15},
+                {2, 9, 0, 2, 12},
+                {4, 8, 2, 0, 10},
+                {15, 15, 12, 10, 0}
+            },
+
+            new int[] {12, 10, 13}
+        );
+
+        int again = 1;
+
+        System.out.println("========================================");
+        System.out.println("    SCHOOL BUS ROUTE OPTIMIZATION");
+        System.out.println("========================================");
+
+        while (again == 1) {
+
+            System.out.println("\nSELECT CITY");
+
+            System.out.println("1. Rajahmundry");
+            System.out.println("2. Peddapuram");
+            System.out.println("3. Samalkot");
+
+            System.out.print("\nSelect City: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    processCity(rajahmundry);
+                    break;
+
+                case 2:
+                    processCity(peddapuram);
+                    break;
+
+                case 3:
+                    processCity(samalkot);
+                    break;
+
+                default:
+                    System.out.println("Invalid city selection!");
+            }
+
+            System.out.println("\nDo you want to check another city?");
+
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            System.out.print("Enter choice: ");
+            again = sc.nextInt();
+
+            if (again != 1) {
+
+                System.out.println("\n========================================");
+                System.out.println("Thank you for using");
+                System.out.println("School Bus Route Optimization!");
+                System.out.println("========================================");
+            }
+        }
+
+        sc.close();
+    }
+}
