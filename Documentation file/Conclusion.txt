@@ -1,0 +1,8 @@
+Conclusion
+The School Bus Route Optimization project successfully demonstrates how different algorithm design techniques can be used to solve real-world transportation problems. The project uses the Nearest Neighbor (Greedy) algorithm to find a route by selecting the nearest unvisited bus stop and the Branch and Bound algorithm to explore possible routes and identify the minimum-distance route.
+
+The Brute Force algorithm is also implemented to verify the result obtained using Branch and Bound. The system considers three cities: Rajahmundry, Peddapuram and Samalkot, with a common school destination. It also checks the total number of students against the bus capacity of 50 seats and displays the selected routes, total distances and algorithm comparison.
+
+Through this project, we can understand the importance of route optimization, distance minimization and algorithm verification. It also helps us learn how concepts such as Greedy methods, Branch and Bound and Brute Force can be applied to practical transportation systems.
+
+Overall, this project provides a simple approach to improving school bus route planning by reducing unnecessary travel distance and identifying efficient routes.

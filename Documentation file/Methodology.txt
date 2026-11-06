@@ -1,0 +1,72 @@
+# METHODOLOGY
+
+The School Bus Route Optimization project follows a systematic approach to identify efficient bus routes and minimize the total travel distance. The system uses Java programming and three algorithmic techniques: Nearest Neighbor, Branch and Bound, and Brute Force.
+
+## 1. Input Initialization
+- Initialize the three cities: Rajahmundry, Peddapuram, and Samalkot.
+- Store the selected bus stops, student counts, and distance matrices.
+- Set the common destination as Pragati English Medium School, Kakinada.
+
+## 2. City Selection
+- Display the available city selection menu.
+- Allow the user to select a city.
+- Load the corresponding city details and route information.
+
+## 3. Bus Capacity Checking
+- Calculate the total number of students.
+- Check whether the number of students is within the bus capacity of 50 seats.
+- If the capacity is exceeded, display an appropriate message.
+- Otherwise, proceed with route optimization.
+
+## 4. Route Initialization
+- Set the selected city as the starting point.
+- Set the school as the final destination.
+- Consider the intermediate bus stops.
+- Use the distance matrix to obtain distances between locations.
+
+## 5. Nearest Neighbor Algorithm
+- Start from the home city.
+- Find the nearest unvisited bus stop.
+- Add the selected stop to the route.
+- Repeat until all intermediate stops are visited.
+- Finally, reach the school and calculate the total distance.
+
+## 6. Branch and Bound Algorithm
+- Explore different possible arrangements of bus stops.
+- Calculate the partial distance of each route.
+- Apply pruning to eliminate routes that cannot improve the current best distance.
+- Continue exploring promising routes.
+- Select the route with the minimum total distance.
+
+## 7. Brute Force Verification
+- Generate all possible orders of intermediate bus stops.
+- Calculate the total distance of each possible route.
+- Identify the minimum-distance route.
+- Compare the result with the Branch and Bound algorithm.
+
+## 8. Result Analysis
+- Display the Nearest Neighbor route and distance.
+- Display the Branch and Bound route and minimum distance.
+- Display the Brute Force minimum distance.
+- Calculate the distance difference between the algorithms.
+- Display the verification result.
+
+## 9. Repeat or Exit
+- Ask the user whether another city needs to be checked.
+- If Yes, return to the city selection menu.
+- If No, terminate the program.
+
+## Tools and Technologies
+
+| Component | Technology |
+|---|---|
+| Programming Language | Java |
+| Route Representation | Distance Matrix |
+| Greedy Technique | Nearest Neighbor |
+| Optimization Technique | Branch and Bound |
+| Verification Technique | Brute Force |
+| Execution Environment | Online Java Compiler |
+
+## Expected Outcome
+
+The system identifies efficient routes for the selected cities, calculates their total travel distances, checks bus capacity, and verifies the minimum-distance result using Brute Force. It demonstrates the practical application of algorithm design techniques in school transportation planning.

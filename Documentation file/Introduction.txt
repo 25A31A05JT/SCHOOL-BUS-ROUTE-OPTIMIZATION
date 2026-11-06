@@ -1,0 +1,10 @@
+INTRODUCTION
+Transportation plays an important role in the daily lives of students, especially those who depend on school buses to travel from their homes to school. Planning efficient bus routes is important to reduce travel distance, save time, and improve transportation management. When students are picked up from different locations, selecting a suitable route becomes a challenging task.
+
+The School Bus Route Optimization System is a Java-based project developed to find efficient school bus routes from different cities to a common school destination. This project considers three cities: Rajahmundry, Peddapuram, and Samalkot, with selected bus stops along each route.
+
+The system uses different algorithm design techniques to solve the route optimization problem. The Nearest Neighbor algorithm, based on the Greedy method, selects the nearest unvisited bus stop at each step. The Branch and Bound algorithm explores possible routes and finds the route with the minimum total distance by eliminating unpromising paths. The Brute Force algorithm is used to verify the minimum-distance result obtained through Branch and Bound.
+
+The project also includes a bus capacity check of 50 students and displays the selected route, total distance, and comparison of algorithm results. It focuses on minimizing travel distance while demonstrating the practical application of optimization algorithms.
+
+Overall, this project provides an understanding of how data structures, algorithms, and Java programming can be combined to solve a practical transportation problem and improve school bus route planning.

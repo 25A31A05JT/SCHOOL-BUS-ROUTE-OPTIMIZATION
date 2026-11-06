@@ -1,0 +1,76 @@
+
+              SCHOOL BUS ROUTE OPTIMIZATION
+                         |
+                         v
+                    ( START )
+                         |
+                         v
+              [ Initialize System ]
+                         |
+                         v
+       [ Load City Details and Distance Matrix ]
+                         |
+                         v
+                 [ Select City ]
+                         |
+              +----------+----------+
+              |          |          |
+              v          v          v
+        [Rajahmundry] [Peddapuram] [Samalkot]
+              |          |          |
+              +----------+----------+
+                         |
+                         v
+              [ Load Selected City Data ]
+                         |
+                         v
+              [ Calculate Total Students ]
+                         |
+                         v
+                < Students <= 50? >
+                    /          \
+                  NO            YES
+                  |              |
+                  v              v
+        [ Capacity Exceeded ] [ Home to School ]
+                  |              |
+                  |              v
+                  |     [ Nearest Neighbor ]
+                  |              |
+                  |              v
+                  |     [ Calculate NN Distance ]
+                  |              |
+                  |              v
+                  |     [ Branch and Bound ]
+                  |              |
+                  |              v
+                  |     [ Find Minimum Distance ]
+                  |              |
+                  |              v
+                  |     [ Brute Force Verification ]
+                  |              |
+                  |              v
+                  |     [ Compare B&B and Brute Force ]
+                  |              |
+                  |              v
+                  |       < Results Equal? >
+                  |          /        \
+                  |        YES         NO
+                  |         |           |
+                  |         v           v
+                  |    [ Success ] [ Failed ]
+                  |         |           |
+                  |         +-----+-----+
+                  |               |
+                  |               v
+                  |     [ Display Routes and Distances ]
+                  |               |
+                  +---------------+
+                          |
+                          v
+                 < Another City? >
+                    /          \
+                  YES           NO
+                   |             |
+                   +---> Select  v
+                         City  ( END )

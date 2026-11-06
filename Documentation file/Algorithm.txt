@@ -1,0 +1,41 @@
+Algorithm: School Bus Route Optimization
+Step 1: Start the program.
+
+Step 2: Initialize the city names, bus stops, student details and distance matrices.
+
+Step 3: Display the city selection menu:
+- Rajahmundry
+- Peddapuram
+- Samalkot
+Step 4: Select a city and load its corresponding route details.
+
+Step 5: Calculate the total number of students and check whether the bus capacity is within 50 seats.
+- If it exceeds 50, display a capacity-exceeded message.
+- Otherwise, continue.
+
+Step 6: Set the direction from Home to School.
+
+Step 7: Apply the Nearest Neighbor algorithm to find the nearest unvisited bus stop and construct the route.
+
+Step 8: Calculate and display the total distance of the Nearest Neighbor route.
+
+Step 9: Apply the Branch and Bound algorithm to explore possible routes and find the minimum-distance route by pruning unpromising paths.
+
+Step 10: Calculate the minimum distance obtained using Branch and Bound.
+
+Step 11: Apply the Brute Force algorithm to generate all possible stop sequences and calculate their distances.
+
+Step 12: Compare the Branch and Bound result with the Brute Force result for verification.
+
+Step 13: Display:
+- Nearest Neighbor route and distance.
+- Branch and Bound route and minimum distance.
+- Brute Force minimum distance.
+- Distance difference between the algorithms.
+- Verification result.
+
+Step 14: Ask the user whether they want to check another city.
+- If Yes, repeat from Step 3.
+- If No, continue.
+
+Step 15: Stop the program.
